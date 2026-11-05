@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  overflow: hidden;
+  background: var(--color-stage);
+}
+
+/* the stage overhangs the window on non 16:9 screens, this clips it */
+body {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* covers the window but stays 16:9 so percentages land on the same spot of the render */
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100vw, 177.78vh);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  container-type: size;
+  background: var(--stage-image) center / cover no-repeat;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* portrait magnifies the glass offset from frame centre so pin the glass to the middle */
+@media (max-aspect-ratio: 1 / 1) {
+  .stage {
+    transform: translate(calc(-1 * var(--glass-x)), -50%);
+  }
+}

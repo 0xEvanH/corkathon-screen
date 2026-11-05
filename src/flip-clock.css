@@ -1,0 +1,101 @@
+.flip-clock {
+  position: absolute;
+  top: var(--glass-y);
+  left: var(--glass-x);
+  display: grid;
+  grid-template-columns:
+    var(--card-width) var(--card-width) var(--group-gap)
+    var(--card-width) var(--card-width);
+  column-gap: var(--card-gap);
+  row-gap: var(--row-gap);
+  transform: translate(-50%, -50%);
+  font-family: var(--font-numerals);
+  font-weight: 600;
+  color: var(--color-numeral);
+}
+
+/* third digit and the zone card start after the spacer column */
+.flip-clock > :nth-child(4n + 3) {
+  grid-column-start: 4;
+}
+
+/* the blur lives here once and never on a moving flap, so it never animates */
+.flap-card,
+.zone-card {
+  border-radius: var(--card-radius);
+  background: linear-gradient(var(--color-glass-sheen), transparent 45%) var(--color-glass);
+  backdrop-filter: var(--glass-filter);
+  box-shadow: var(--glass-shadow-size) var(--color-glass-shadow);
+}
+
+.flap-card {
+  position: relative;
+  height: var(--card-height);
+  perspective: var(--flap-perspective);
+}
+
+.zone-card {
+  grid-column-end: span 2;
+  display: grid;
+  place-items: center;
+  font-size: var(--zone-size);
+  padding-bottom: var(--numeral-lift);
+}
+
+.flap-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.flap-half-top {
+  top: 0;
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  transform-origin: bottom;
+}
+
+.flap-half-bottom {
+  bottom: 0;
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+  box-shadow: inset 0 2px 1px var(--color-hinge);
+  transform-origin: top;
+}
+
+.flap-face {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--card-height);
+  display: grid;
+  place-items: center;
+  font-size: var(--numeral-size);
+  line-height: 1;
+  padding-bottom: var(--numeral-lift);
+}
+
+.flap-half-top .flap-face {
+  top: 0;
+}
+
+.flap-half-bottom .flap-face {
+  bottom: 0;
+}
+
+.flap-body {
+  position: absolute;
+  inset: 0;
+  background: var(--color-flap-body);
+  opacity: 0;
+}
+
+.flap-leaf {
+  z-index: 1;
+  visibility: hidden;
+}
+
+[data-flipping] .flap-leaf {
+  visibility: visible;
+}

@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  src: url('./assets/fonts/barlow-semi-condensed-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: block;
+}
+
+:root {
+  --color-stage: #000;
+  --color-glass: rgb(14 44 170 / 0.62);
+  --color-glass-sheen: rgb(255 255 255 / 0.08);
+  --color-glass-shadow: rgb(2 10 40 / 0.45);
+  --color-hinge: rgb(2 10 40 / 0.4);
+  --color-flap-body: #2f63e6;
+  --color-numeral: #e8f1ff;
+
+  --font-numerals: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+
+  /* swap the poster here, the clock stays locked to its glass */
+  --stage-image: url('../corkathonposter1920x1080.png');
+
+  /* centre of the monitor glass as a share of the 16:9 frame */
+  --glass-x: 50.52%;
+  --glass-y: 41.76%;
+
+  /* 1cqw is 1% of the stage width so the clock scales with the render */
+  --card-width: 5.4cqw;
+  --card-height: 8.4cqw;
+  --card-gap: 0.35cqw;
+  --group-gap: 0.55cqw;
+  --row-gap: 0.7cqw;
+  --card-radius: 0.6cqw;
+  --glass-filter: blur(1.1cqw);
+  --glass-shadow-size: 0 0.8cqw 2.2cqw;
+  --flap-perspective: 40cqw;
+  --numeral-size: 7.6cqw;
+  --zone-size: 4.4cqw;
+
+  /* the font sits low in its line box, this puts the hinge through the middle */
+  --numeral-lift: 0.1em;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --color-glass: #173a9c;
+    --glass-filter: none;
+  }
+}
