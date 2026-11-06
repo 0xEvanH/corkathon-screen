@@ -2,3 +2,11 @@ node_modules
 dist
 test-results
 playwright-report
+
+# source images, the site uses the cutouts in src/assets
+/masood.jpeg
+/frame.jpeg
+/ignite.jpeg
+/framelogo.png
+/igniteucclogo.jpeg
+/compscilogo.png

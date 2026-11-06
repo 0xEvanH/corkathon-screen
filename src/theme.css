@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 @font-face {
   font-family: 'Barlow Semi Condensed';
   src: url('./assets/fonts/barlow-semi-condensed-600.woff2') format('woff2');
@@ -5,8 +7,22 @@
   font-display: block;
 }
 
-:root {
-  --color-stage: #000;
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('./assets/fonts/inter-tight-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: block;
+}
+
+@theme static {
+  --color-ink: #000;
+  --color-paper: #fff;
+  --color-slot: #141a26;
+  --color-slot-text: #b9c6da;
+
+  --color-accent: #1546ff;
+  --color-accent-bright: #12e6ff;
+
   --color-glass: rgb(14 44 170 / 0.62);
   --color-glass-sheen: rgb(255 255 255 / 0.08);
   --color-glass-shadow: rgb(2 10 40 / 0.45);
@@ -14,8 +30,12 @@
   --color-flap-body: #2f63e6;
   --color-numeral: #e8f1ff;
 
+  --font-display: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif;
   --font-numerals: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+  --font-countdown: 'Barlow Semi Condensed', 'Inter Tight', sans-serif;
+}
 
+:root {
   /* swap the poster here, the clock stays locked to its glass */
   --stage-image: url('../corkathonposter1920x1080.png');
 
@@ -35,6 +55,8 @@
   --flap-perspective: 40cqw;
   --numeral-size: 7.6cqw;
   --zone-size: 4.4cqw;
+  --countdown-height: 4.4cqw;
+  --countdown-size: 2.9cqw;
 
   /* the font sits low in its line box, this puts the hinge through the middle */
   --numeral-lift: 0.1em;

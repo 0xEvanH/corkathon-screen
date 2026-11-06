@@ -21,7 +21,8 @@
 
 /* the blur lives here once and never on a moving flap, so it never animates */
 .flap-card,
-.zone-card {
+.zone-card,
+.countdown-card {
   border-radius: var(--card-radius);
   background: linear-gradient(var(--color-glass-sheen), transparent 45%) var(--color-glass);
   backdrop-filter: var(--glass-filter);
@@ -39,6 +40,20 @@
   display: grid;
   place-items: center;
   font-size: var(--zone-size);
+  padding-bottom: var(--numeral-lift);
+}
+
+.countdown-card {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  height: var(--countdown-height);
+  /* the numeral font is subset so most letters fall through to inter tight */
+  font-family: var(--font-countdown);
+  font-size: var(--countdown-size);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
   padding-bottom: var(--numeral-lift);
 }
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'bun:test'
-import { ClockError, gmtDigits, msUntilNextSecond } from '#src/gmt-time'
+import { ClockError, gmtDigits, msUntilNextSecond } from '#src/gmt-time.ts'
 
 const originalZone = process.env.TZ
 
