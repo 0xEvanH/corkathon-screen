@@ -7,7 +7,7 @@ const openAt = async (page: Page, time: string) => {
   const paused = new Date(time)
   await page.clock.install({ time: new Date(paused.getTime() - 1000) })
   await page.clock.pauseAt(paused)
-  await page.goto('/')
+  await page.goto('/#clock')
   await expect(clock(page)).toBeVisible()
 }
 
@@ -185,3 +185,62 @@ test('falls back to solid cards when transparency is reduced', async ({ page }) 
   expect(style.backdrop).toBe('none')
   expect(channels(style.background)[3]).toBeUndefined()
 })
+
+const countdown = (page: Page) => page.locator('.countdown-card')
+
+test('counts down to 21:15 under the clock', async ({ page }) => {
+  await openAt(page, '2026-11-07T17:02:51Z')
+  await expect(countdown(page)).toHaveText('Ends in 04:12:09')
+  await page.clock.runFor(1000)
+  await expect(countdown(page)).toHaveText('Ends in 04:12:08')
+})
+
+test('says time is up the moment the countdown ends', async ({ page }) => {
+  await openAt(page, '2026-11-07T21:14:59Z')
+  await expect(countdown(page)).toHaveText('Ends in 00:00:01')
+  await page.clock.runFor(1000)
+  await expect(countdown(page)).toHaveText("Time's up")
+  await expect(clock(page)).toHaveAccessibleName('21:15:00 GMT')
+})
+
+test('stays up after the end when the page is reloaded', async ({ page }) => {
+  await openAt(page, '2026-11-07T22:30:00Z')
+  await expect(countdown(page)).toHaveText("Time's up")
+})
+
+test('catches the countdown up after the tab sleeps', async ({ page }) => {
+  await openAt(page, '2026-11-07T17:02:51Z')
+  await page.clock.fastForward('01:00:00')
+  await expect(countdown(page)).toHaveText('Ends in 03:12:09')
+})
+
+for (const size of [
+  { width: 360, height: 800 },
+  { width: 1440, height: 900 },
+]) {
+  test(`keeps the countdown inside the glass at ${size.width}`, async ({ page }) => {
+    await page.setViewportSize(size)
+    await openAt(page, '2026-11-07T17:02:51Z')
+    const box = await countdown(page).boundingBox()
+    if (!box) throw new Error('countdown has no box')
+    expect(box.x).toBeGreaterThanOrEqual(0)
+    expect(box.x + box.width).toBeLessThanOrEqual(size.width)
+    expect(box.y + box.height).toBeLessThanOrEqual(size.height)
+    const text = await countdown(page).evaluate((card) => {
+      const range = document.createRange()
+      range.selectNodeContents(card)
+      const lines = range.getClientRects()
+      const bounds = range.getBoundingClientRect()
+      const edge = card.getBoundingClientRect()
+      return {
+        lines: lines.length,
+        inside:
+          bounds.left >= edge.left &&
+          bounds.right <= edge.right &&
+          bounds.top >= edge.top &&
+          bounds.bottom <= edge.bottom,
+      }
+    })
+    expect(text).toEqual({ lines: 1, inside: true })
+  })
+}
