@@ -42,6 +42,8 @@ All slide copy lives in [src/deck-content.ts](src/deck-content.ts). Replace ever
 
 Each sponsor slide shows a person and a logo. To swap either, put the file in `src/assets/people/` or `src/assets/logos/`, import it in `deck-content.ts`, and set `photoUrl`, `logoUrl` and `logoAlt`. Always import images: a plain path string works in dev but breaks in the build. Use transparent PNGs, because the tiles are dark. The tests in [tests/e2e/slideshow.e2e.ts](tests/e2e/slideshow.e2e.ts) count the points on each slide and check the image names in `SPONSORS`, so update them when the content changes.
 
+Edits only reach the big screen after a redeploy. See [Deploy it](#deploy-it).
+
 ## Set the presenter
 
 Edit [src/presenter.ts](src/presenter.ts). Put the photo in `src/assets/people/` and import it:
@@ -72,6 +74,10 @@ Colours, fonts and clock sizes live in [src/theme.css](src/theme.css):
 The poster is 16:9, so a 16:9 display shows all of it. Other screen shapes crop the edges. A new poster with the monitor in a different spot needs new `--glass-x` and `--glass-y` values, and the same numbers updated in the "sits on the monitor glass" test.
 
 ## Deploy it
+
+The live site is [corkathon.evhsync.com](https://corkathon.evhsync.com), hosted on 0xEvanH's Coolify. It does not redeploy on its own, so a push changes nothing on the live site. When your changes are ready, tell 0xEvanH, who will merge them and redeploy.
+
+To build it yourself:
 
 ```bash
 bun run build
