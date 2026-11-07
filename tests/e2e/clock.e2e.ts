@@ -3,11 +3,11 @@ import { expect, test, type Page } from '@playwright/test'
 
 const clock = (page: Page) => page.getByRole('timer')
 
-const openAt = async (page: Page, time: string) => {
+const openAt = async (page: Page, time: string, slide = 'deadlinecountdown') => {
   const paused = new Date(time)
   await page.clock.install({ time: new Date(paused.getTime() - 1000) })
   await page.clock.pauseAt(paused)
-  await page.goto('/#clock')
+  await page.goto(`/#${slide}`)
   await expect(clock(page)).toBeVisible()
 }
 
@@ -188,19 +188,46 @@ test('falls back to solid cards when transparency is reduced', async ({ page }) 
 
 const countdown = (page: Page) => page.locator('.countdown-card')
 
-test('counts down to 21:15 under the clock', async ({ page }) => {
-  await openAt(page, '2026-11-07T17:02:51Z')
-  await expect(countdown(page)).toHaveText('Ends in 04:12:09')
+test('counts down to the opening talk on the countdown slide', async ({ page }) => {
+  await openAt(page, '2026-11-07T08:02:51Z', 'countdown')
+  await expect(countdown(page)).toHaveText('Live in 01:12:09')
   await page.clock.runFor(1000)
-  await expect(countdown(page)).toHaveText('Ends in 04:12:08')
+  await expect(countdown(page)).toHaveText('Live in 01:12:08')
+})
+
+test('counts through the night before the event', async ({ page }) => {
+  await openAt(page, '2026-11-06T22:00:00Z', 'countdown')
+  await expect(countdown(page)).toHaveText('Live in 11:15:00')
+})
+
+test('starts the opening talk at 09:15', async ({ page }) => {
+  await openAt(page, '2026-11-07T09:14:58Z', 'countdown')
+  await expect(countdown(page)).toHaveText('Live in 00:00:02')
+  await page.clock.runFor(3000)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Corkathon 2026')
+  await expect(page).toHaveURL(/#title$/)
+})
+
+test('stays on the clock after the talk instead of replaying it', async ({ page }) => {
+  await openAt(page, '2026-11-07T10:00:00Z')
+  await page.clock.runFor(5000)
+  await expect(clock(page)).toBeVisible()
+  await expect(page).toHaveURL(/#deadlinecountdown$/)
+})
+
+test('counts down to 19:00 under the clock', async ({ page }) => {
+  await openAt(page, '2026-11-07T17:02:51Z')
+  await expect(countdown(page)).toHaveText('Ends in 01:57:09')
+  await page.clock.runFor(1000)
+  await expect(countdown(page)).toHaveText('Ends in 01:57:08')
 })
 
 test('says time is up the moment the countdown ends', async ({ page }) => {
-  await openAt(page, '2026-11-07T21:14:59Z')
+  await openAt(page, '2026-11-07T18:59:59Z')
   await expect(countdown(page)).toHaveText('Ends in 00:00:01')
   await page.clock.runFor(1000)
   await expect(countdown(page)).toHaveText("Time's up")
-  await expect(clock(page)).toHaveAccessibleName('21:15:00 GMT')
+  await expect(clock(page)).toHaveAccessibleName('19:00:00 GMT')
 })
 
 test('stays up after the end when the page is reloaded', async ({ page }) => {
@@ -211,36 +238,41 @@ test('stays up after the end when the page is reloaded', async ({ page }) => {
 test('catches the countdown up after the tab sleeps', async ({ page }) => {
   await openAt(page, '2026-11-07T17:02:51Z')
   await page.clock.fastForward('01:00:00')
-  await expect(countdown(page)).toHaveText('Ends in 03:12:09')
+  await expect(countdown(page)).toHaveText('Ends in 00:57:09')
 })
 
 for (const size of [
   { width: 360, height: 800 },
   { width: 1440, height: 900 },
 ]) {
-  test(`keeps the countdown inside the glass at ${size.width}`, async ({ page }) => {
-    await page.setViewportSize(size)
-    await openAt(page, '2026-11-07T17:02:51Z')
-    const box = await countdown(page).boundingBox()
-    if (!box) throw new Error('countdown has no box')
-    expect(box.x).toBeGreaterThanOrEqual(0)
-    expect(box.x + box.width).toBeLessThanOrEqual(size.width)
-    expect(box.y + box.height).toBeLessThanOrEqual(size.height)
-    const text = await countdown(page).evaluate((card) => {
-      const range = document.createRange()
-      range.selectNodeContents(card)
-      const lines = range.getClientRects()
-      const bounds = range.getBoundingClientRect()
-      const edge = card.getBoundingClientRect()
-      return {
-        lines: lines.length,
-        inside:
-          bounds.left >= edge.left &&
-          bounds.right <= edge.right &&
-          bounds.top >= edge.top &&
-          bounds.bottom <= edge.bottom,
-      }
+  for (const [slide, time] of [
+    ['countdown', '2026-11-07T08:02:51Z'],
+    ['deadlinecountdown', '2026-11-07T17:02:51Z'],
+  ]) {
+    test(`keeps the ${slide} text inside the glass at ${size.width}`, async ({ page }) => {
+      await page.setViewportSize(size)
+      await openAt(page, time, slide)
+      const box = await countdown(page).boundingBox()
+      if (!box) throw new Error('countdown has no box')
+      expect(box.x).toBeGreaterThanOrEqual(0)
+      expect(box.x + box.width).toBeLessThanOrEqual(size.width)
+      expect(box.y + box.height).toBeLessThanOrEqual(size.height)
+      const text = await countdown(page).evaluate((card) => {
+        const range = document.createRange()
+        range.selectNodeContents(card)
+        const lines = range.getClientRects()
+        const bounds = range.getBoundingClientRect()
+        const edge = card.getBoundingClientRect()
+        return {
+          lines: lines.length,
+          inside:
+            bounds.left >= edge.left &&
+            bounds.right <= edge.right &&
+            bounds.top >= edge.top &&
+            bounds.bottom <= edge.bottom,
+        }
+      })
+      expect(text).toEqual({ lines: 1, inside: true })
     })
-    expect(text).toEqual({ lines: 1, inside: true })
-  })
+  }
 }

@@ -4,21 +4,29 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
 const heading = (page: Page) => page.getByRole('heading', { level: 1 })
 
 const EVENT_TITLE = 'Corkathon 2026'
+const QUOTE_TITLE = 'From one of your applications'
 const PRESENTER_TITLE = "Hi, I'm Masood"
 const BEGIN_TITLE = 'Let the hacking begin'
 const SPONSORS = [
-  ['frame', 'Frame representative', 'Frame logo'],
-  ['ignite', 'Ignite representative', 'University College Cork logo'],
+  ['frame', 'Harry Page', 'Frame logo'],
+  ['ignite', 'Eamon Curtin', 'University College Cork logo'],
 ] as const
 const TALK = [
   ['title', EVENT_TITLE],
+  ['quote', QUOTE_TITLE],
   ['presenter', PRESENTER_TITLE],
   ['goal', "Today's goal"],
   ['format', 'Format & Devpost'],
   ['judging', 'Judging'],
   ['housekeeping', 'Quick housekeeping'],
-  ['frame', 'Frame'],
-  ['ignite', 'Ignite'],
+  ['frame', 'Harry Page'],
+  ['frame-backdrop', 'Frame'],
+  ['frame-who', 'Who we are'],
+  ['frame-challenge', 'The challenge'],
+  ['frame-directions', 'What great looks like'],
+  ['frame-judging', 'How it’s judged'],
+  ['ignite', 'Eamon Curtin'],
+  ['ignite-brief', 'Best Startup Potential'],
   ['begin', BEGIN_TITLE],
 ] as const
 
@@ -39,7 +47,7 @@ test('introduces the presenter and the society', async ({ page }) => {
   await expect(page.getByText('UCC Computer Science Society')).toBeVisible()
 })
 
-test('walks all nine slides with the space bar and ends on the clock', async ({ page }) => {
+test('walks all sixteen slides with the space bar and ends on the clock', async ({ page }) => {
   await page.goto('/')
   for (const [, title] of TALK) {
     await expect(heading(page)).toHaveText(title)
@@ -48,7 +56,7 @@ test('walks all nine slides with the space bar and ends on the clock', async ({ 
   await expect(page.getByRole('timer')).toBeVisible()
 })
 
-for (const [slide, count] of [['goal', 1], ['format', 4], ['judging', 4], ['housekeeping', 4]] as const) {
+for (const [slide, count] of [['goal', 1], ['format', 4], ['judging', 4], ['housekeeping', 5], ['ignite-brief', 3]] as const) {
   test(`lists ${count} on ${slide}`, async ({ page }) => {
     await page.goto(`/#${slide}`)
     await expect(page.getByRole('listitem')).toHaveCount(count)
@@ -95,7 +103,7 @@ test('follows a clicker sending page up and page down', async ({ page }) => {
   await page.goto('/')
   await expect(heading(page)).toHaveText(EVENT_TITLE)
   await page.keyboard.press('PageDown')
-  await expect(heading(page)).toHaveText(PRESENTER_TITLE)
+  await expect(heading(page)).toHaveText(QUOTE_TITLE)
   await page.keyboard.press('PageUp')
   await expect(heading(page)).toHaveText(EVENT_TITLE)
 })
@@ -104,7 +112,7 @@ test('moves forward on a mouse click', async ({ page }) => {
   await page.goto('/')
   await expect(heading(page)).toHaveText(EVENT_TITLE)
   await page.mouse.click(200, 200)
-  await expect(heading(page)).toHaveText(PRESENTER_TITLE)
+  await expect(heading(page)).toHaveText(QUOTE_TITLE)
 })
 
 test('ignores a held key so one press is one slide', async ({ page }) => {
@@ -113,7 +121,7 @@ test('ignores a held key so one press is one slide', async ({ page }) => {
   await page.keyboard.down('ArrowRight')
   await page.keyboard.down('ArrowRight')
   await page.keyboard.up('ArrowRight')
-  await expect(heading(page)).toHaveText(PRESENTER_TITLE)
+  await expect(heading(page)).toHaveText(QUOTE_TITLE)
 })
 
 test('stays on the clock after a refresh', async ({ page }) => {
@@ -121,16 +129,16 @@ test('stays on the clock after a refresh', async ({ page }) => {
   await expect(heading(page)).toHaveText(BEGIN_TITLE)
   await page.keyboard.press('ArrowRight')
   await expect(page.getByRole('timer')).toBeVisible()
-  await expect(page).toHaveURL(/#clock$/)
+  await expect(page).toHaveURL(/#deadlinecountdown$/)
   await page.reload()
   await expect(page.getByRole('timer')).toBeVisible()
 })
 
 test('does not wrap back to the title from the clock', async ({ page }) => {
-  await page.goto('/#clock')
+  await page.goto('/#deadlinecountdown')
   await expect(page.getByRole('timer')).toBeVisible()
   await page.keyboard.press('ArrowRight')
-  await expect(page).toHaveURL(/#clock$/)
+  await expect(page).toHaveURL(/#deadlinecountdown$/)
   await expect(page.getByRole('timer')).toBeVisible()
 })
 

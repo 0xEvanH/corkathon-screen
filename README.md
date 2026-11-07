@@ -1,6 +1,6 @@
 # Corkathon screen
 
-The big-screen page for Corkathon, run by the UCC Computer Science Society. It carries the nine-slide opening talk, then stays on the event poster with a live GMT flip clock on the monitor's screen.
+The big-screen page for Corkathon, run by the UCC Computer Science Society. It carries the sixteen-slide opening talk, then stays on the event poster with a live GMT flip clock on the monitor's screen.
 
 Built with React, Tailwind and Motion on Vite. The clock always shows GMT, including during Irish summer time, and takes the time from the device's clock, so check the system time on the machine running the display.
 
@@ -19,20 +19,35 @@ Then open http://localhost:4173 and go full screen.
 
 | Slide | Link |
 |---|---|
+| Countdown | `/#countdown` |
 | 1. Corkathon 2026 | `/#title` |
-| 2. Presenter and CSSoc | `/#presenter` |
-| 3. Today's goal | `/#goal` |
-| 4. Format and Devpost | `/#format` |
-| 5. Judging | `/#judging` |
-| 6. Quick housekeeping | `/#housekeeping` |
-| 7. Frame | `/#frame` |
-| 8. Ignite | `/#ignite` |
-| 9. Let the hacking begin | `/#begin` |
-| Clock | `/#clock` |
+| 2. First-hackathon quote | `/#quote` |
+| 3. Presenter and CSSoc | `/#presenter` |
+| 4. Today's goal | `/#goal` |
+| 5. Format and Devpost | `/#format` |
+| 6. Judging | `/#judging` |
+| 7. Quick housekeeping | `/#housekeeping` |
+| 8. Frame: Harry Page | `/#frame` |
+| 9. Frame backdrop | `/#frame-backdrop` |
+| 10. Frame: Who we are | `/#frame-who` |
+| 11. Frame: The challenge | `/#frame-challenge` |
+| 12. Frame: What great looks like | `/#frame-directions` |
+| 13. Frame: How it's judged | `/#frame-judging` |
+| 14. Ignite: Eamon Curtin | `/#ignite` |
+| 15. Ignite's challenge | `/#ignite-brief` |
+| 16. Let the hacking begin | `/#begin` |
+| Deadline countdown | `/#deadlinecountdown` |
 
 Space, Enter, the right arrow, Page Down or a mouse click moves forward. The left arrow or Page Up moves back. Presentation clickers send Page Up and Page Down, so they work with no setup.
 
-The clock slide also counts down to the end of hacking at 21:15 GMT, then shows `Time's up` until midnight GMT. To change the end time, edit `HACKING_ENDS_GMT` in [src/countdown.ts](src/countdown.ts) and the times in its tests.
+Two slides share the poster and flip clock:
+
+- `/#countdown` sits before the title. It counts down to the opening talk at 09:15 GMT on Saturday 7 November 2026 (`Live in HH:MM:SS`), then moves to the title slide on its own. Leave the screen here before the event.
+- `/#deadlinecountdown` comes after the talk. It counts down to the end of hacking at 19:00 GMT that day (`Ends in HH:MM:SS`), then shows `Time's up`.
+
+A bare address still opens on the title slide. Every slide also opens from a path, like `/countdown` or `/deadlinecountdown`, as long as the host sends unknown paths to `index.html`; the `#` links always work.
+
+To change either time, edit `TALK_STARTS` or `HACKING_ENDS` in [src/countdown.ts](src/countdown.ts) and the times in its tests.
 
 The talk stops at the clock and does not loop. A refresh stays on the current slide, so reloading during the event will not replay the talk. To replay it, open `/#title`.
 

@@ -4,6 +4,7 @@ import { MaskedWord } from '#src/MaskedWord.tsx'
 type SponsorSlideProps = {
   name: string
   blurb: string
+  photoAlt?: string
   photoUrl: string
   logoUrl: string
   logoAlt: string
@@ -18,7 +19,7 @@ const SponsorTile = ({ children }: { children: ReactNode }) => (
   </div>
 )
 
-export const SponsorSlide = ({ name, blurb, photoUrl, logoUrl, logoAlt }: SponsorSlideProps) => (
+export const SponsorSlide = ({ name, blurb, photoAlt, photoUrl, logoUrl, logoAlt }: SponsorSlideProps) => (
   <div className="slide flex items-center justify-between gap-[5cqw] bg-ink px-[7cqw] portrait:flex-col portrait:items-start portrait:justify-center">
     <div className="min-w-0">
       <h1 className="font-display text-[12cqw] leading-[1.05] font-semibold tracking-[-0.035em] text-paper portrait:text-[20cqw]">
@@ -32,7 +33,7 @@ export const SponsorSlide = ({ name, blurb, photoUrl, logoUrl, logoAlt }: Sponso
       <SponsorTile>
         <img
           src={photoUrl}
-          alt={`${name} representative`}
+          alt={photoAlt ?? `${name} representative`}
           className="size-full object-contain object-bottom"
         />
       </SponsorTile>
