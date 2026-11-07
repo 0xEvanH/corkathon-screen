@@ -3,6 +3,13 @@ import igniteLogo from '#src/assets/logos/ignite-ucc-light.png'
 import framePhoto from '#src/assets/people/frame.png'
 import ignitePhoto from '#src/assets/people/ignite.png'
 import whatsappQr from '#src/assets/whatsapp-qr.png'
+import igniteDeck1 from '#src/assets/ignite/ignite-1.jpg'
+import igniteDeck2 from '#src/assets/ignite/ignite-2.jpg'
+import igniteDeck3 from '#src/assets/ignite/ignite-3.jpg'
+import igniteDeck4 from '#src/assets/ignite/ignite-4.jpg'
+import igniteDeck5 from '#src/assets/ignite/ignite-5.jpg'
+import igniteDeck6 from '#src/assets/ignite/ignite-6.jpg'
+import igniteDeck7 from '#src/assets/ignite/ignite-7.jpg'
 
 type InfoContent = {
   title: string
@@ -90,3 +97,67 @@ export const igniteBrief = {
     'Almost 250 founders and close to 200 start-up ideas so far',
   ],
 } as const
+
+// the evening: final pitches, the sponsor panel while judges deliberate, then awards
+export const finalsFormat: InfoContent = {
+  title: 'Final pitches',
+  points: [
+    '3-minute pitch, then 2 minutes of Q&A',
+    'Strict timer, so lead with your live demo',
+    'Judged on innovation, impact, technical depth and presentation',
+    'Finalists, have your laptop ready before you\'re called',
+  ],
+}
+
+export const panel = {
+  kicker: 'While the judges deliberate',
+  title: 'Sponsor keynote & panel',
+  people: [
+    { name: 'Harry Page', role: 'Founding AI and Automation Analyst, Frame', photoUrl: framePhoto },
+    { name: 'Eamon Curtin', role: 'Programme Director, IGNITE UCC', photoUrl: ignitePhoto },
+  ],
+} as const
+
+export const thanks: InfoContent = {
+  title: 'Thank you',
+  points: ['Frame', 'Ignite', 'The volunteers and mentors helping out today'],
+}
+
+// IGNITE's own introduction deck (IGNITE_Introduction_for_Corkathon.pdf), one image per page
+export const igniteDeck = [
+  {
+    title: 'IGNITE: UCC’s Home for Entrepreneurship',
+    src: igniteDeck1,
+    alt: 'IGNITE, UCC’s Home for Entrepreneurship. Founders holding up their start-up logos.',
+  },
+  {
+    title: 'What is IGNITE?',
+    src: igniteDeck2,
+    alt: 'What is IGNITE? Ireland’s leading graduate startup incubation programme, designed for ambitious founders ready to turn their innovative ideas into thriving businesses.',
+  },
+  {
+    title: 'What you get when you join IGNITE',
+    src: igniteDeck3,
+    alt: 'What you get when you join IGNITE: expert mentorship, start-up funding, practical workshops and training, personalised coaching and peer support, talks from successful founders, dedicated desk space, and access to UCC’s global alumni community.',
+  },
+  {
+    title: 'Is this you?',
+    src: igniteDeck4,
+    alt: 'Is this you? An early-stage business idea, a recent graduate from any discipline, from any Irish university or third-level institution, ready to commit full time, with passion and potential. Register your interest with the QR code. Next intake early 2027. ignite@ucc.ie, Western Gateway Building, UCC, ignite.ucc.ie.',
+  },
+  {
+    title: 'IGNITE for students',
+    src: igniteDeck5,
+    alt: 'IGNITE for students: Startup Lab, a 6-week programme; monthly Meetups; Ideas for Impact, a one-day hackathon; and the UCC Student Entrepreneur of the Year Competition.',
+  },
+  {
+    title: 'Follow IGNITE and join the community',
+    src: igniteDeck6,
+    alt: 'QR codes to follow IGNITE for Students on Instagram and to join the IGNITE student entrepreneur community.',
+  },
+  {
+    title: 'Your next profile photo could be on us!',
+    src: igniteDeck7,
+    alt: 'IGNITE photoshoot giveaway: sign up for the IGNITE student newsletter for a chance to win a professional headshot.',
+  },
+] as const

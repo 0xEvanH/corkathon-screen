@@ -19,15 +19,27 @@ const TALK = [
   ['format', 'Format & Devpost'],
   ['judging', 'Judging'],
   ['housekeeping', 'Quick housekeeping'],
+  ['begin', BEGIN_TITLE],
+] as const
+const EVENING = [
+  ['finals', 'Top 10 finalists'],
+  ['finals-format', 'Final pitches'],
+  ['panel', 'Sponsor keynote & panel'],
   ['frame', 'Harry Page'],
   ['frame-backdrop', 'Frame'],
+  ['frame-cover', 'Frame track briefing'],
   ['frame-who', 'Who we are'],
-  ['frame-challenge', 'The challenge'],
-  ['frame-directions', 'What great looks like'],
-  ['frame-judging', 'How it’s judged'],
   ['ignite', 'Eamon Curtin'],
-  ['ignite-brief', 'Best Startup Potential'],
-  ['begin', BEGIN_TITLE],
+  ['ignite-deck-1', 'IGNITE: UCC’s Home for Entrepreneurship'],
+  ['ignite-deck-2', 'What is IGNITE?'],
+  ['ignite-deck-3', 'What you get when you join IGNITE'],
+  ['ignite-deck-4', 'Is this you?'],
+  ['ignite-deck-5', 'IGNITE for students'],
+  ['ignite-deck-6', 'Follow IGNITE and join the community'],
+  ['ignite-deck-7', 'Your next profile photo could be on us!'],
+  ['awards', 'And the winners are…'],
+  ['thanks', 'Thank you'],
+  ['outro', EVENT_TITLE],
 ] as const
 
 const expectLoaded = async (image: Locator) => {
@@ -47,7 +59,7 @@ test('introduces the presenter and the society', async ({ page }) => {
   await expect(page.getByText('UCC Computer Science Society')).toBeVisible()
 })
 
-test('walks all sixteen slides with the space bar and ends on the clock', async ({ page }) => {
+test('walks all eight opening slides with the space bar and ends on the clock', async ({ page }) => {
   await page.goto('/')
   for (const [, title] of TALK) {
     await expect(heading(page)).toHaveText(title)
@@ -56,7 +68,7 @@ test('walks all sixteen slides with the space bar and ends on the clock', async 
   await expect(page.getByRole('timer')).toBeVisible()
 })
 
-for (const [slide, count] of [['goal', 1], ['format', 4], ['judging', 4], ['housekeeping', 5], ['ignite-brief', 3]] as const) {
+for (const [slide, count] of [['goal', 1], ['format', 4], ['judging', 4], ['housekeeping', 5], ['finals-format', 4], ['thanks', 3]] as const) {
   test(`lists ${count} on ${slide}`, async ({ page }) => {
     await page.goto(`/#${slide}`)
     await expect(page.getByRole('listitem')).toHaveCount(count)
@@ -134,12 +146,20 @@ test('stays on the clock after a refresh', async ({ page }) => {
   await expect(page.getByRole('timer')).toBeVisible()
 })
 
-test('does not wrap back to the title from the clock', async ({ page }) => {
+test('walks the evening slides on from the deadline clock', async ({ page }) => {
   await page.goto('/#deadlinecountdown')
   await expect(page.getByRole('timer')).toBeVisible()
+  for (const [, title] of EVENING) {
+    await page.keyboard.press('Space')
+    await expect(heading(page)).toHaveText(title)
+  }
+})
+
+test('does not wrap back to the start from the last slide', async ({ page }) => {
+  await page.goto('/#outro')
+  await expect(heading(page)).toHaveText(EVENT_TITLE)
   await page.keyboard.press('ArrowRight')
-  await expect(page).toHaveURL(/#deadlinecountdown$/)
-  await expect(page.getByRole('timer')).toBeVisible()
+  await expect(page).toHaveURL(/#outro$/)
 })
 
 test('falls back to the title on a hash that is not a slide', async ({ page }) => {
@@ -190,7 +210,7 @@ for (const size of [
   { width: 1440, height: 900 },
   { width: 1920, height: 1080 },
 ]) {
-  for (const [slide, title] of TALK) {
+  for (const [slide, title] of [...TALK, ...EVENING]) {
     test(`${slide} fits ${size.width}x${size.height} with no axe issues`, async ({ page }) => {
       await page.setViewportSize(size)
       await page.goto(`/#${slide}`)
@@ -214,7 +234,7 @@ for (const size of [
 test.describe('with reduced motion', () => {
   test.use({ contextOptions: { reducedMotion: 'reduce' } })
 
-  for (const [slide] of TALK) {
+  for (const [slide] of [...TALK, ...EVENING]) {
     test(`shows ${slide} text at rest with nothing moving in`, async ({ page }) => {
       await page.goto(`/#${slide}`)
       const moving = page.locator('[data-reveal]')
