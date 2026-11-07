@@ -23,6 +23,17 @@
   --color-accent: #1546ff;
   --color-accent-bright: #12e6ff;
 
+  /* Frame's backdrop brand */
+  --color-frame-olive: #636759;
+  --color-frame-stone: #ccc6c8;
+  --color-frame-plum: #534447;
+  --color-frame-sage: #d1d6b6;
+  --color-frame-rule: #7a6b6e;
+  /* Frame's #7a6b6e darkened just enough to pass contrast for small text */
+  --color-frame-muted: #5f5053;
+  --font-frame-sans: Arial, 'Helvetica Neue', sans-serif;
+  --font-frame-serif: Georgia, 'Times New Roman', serif;
+
   --color-glass: rgb(14 44 170 / 0.62);
   --color-glass-sheen: rgb(255 255 255 / 0.08);
   --color-glass-shadow: rgb(2 10 40 / 0.45);

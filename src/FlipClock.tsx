@@ -8,7 +8,12 @@ const spokenTime = (digits: string[]) => {
   return `${h1}${h2}:${m1}${m2}:${s1}${s2} GMT`
 }
 
-export const FlipClock = () => {
+type FlipClockProps = {
+  // the line under the clock, picked by the slide
+  countdown?: (epochMs: number) => string
+}
+
+export const FlipClock = ({ countdown: countdownFor = countdownText }: FlipClockProps) => {
   const clockRef = useRef<HTMLDivElement>(null)
   const countdownRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +30,7 @@ export const FlipClock = () => {
       const digits = gmtDigits(now)
       digits.forEach((digit, index) => flipDigits[index]?.showDigit(digit))
       clock.setAttribute('aria-label', spokenTime(digits))
-      countdown.textContent = countdownText(now)
+      countdown.textContent = countdownFor(now)
     }
 
     let timer: ReturnType<typeof setTimeout>
@@ -43,7 +48,7 @@ export const FlipClock = () => {
       document.removeEventListener('visibilitychange', render)
       flipDigits.forEach((digit) => digit.element.remove())
     }
-  }, [])
+  }, [countdownFor])
 
   return (
     <div ref={clockRef} className="flip-clock" role="timer">
