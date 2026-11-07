@@ -12,16 +12,26 @@ describe('slide order', () => {
       'format',
       'judging',
       'housekeeping',
-      'frame',
-      'frame-backdrop',
-      'frame-who',
-      'frame-challenge',
-      'frame-directions',
-      'frame-judging',
-      'ignite',
-      'ignite-brief',
       'begin',
       'deadlinecountdown',
+      'finals',
+      'finals-format',
+      'panel',
+      'frame',
+      'frame-backdrop',
+      'frame-cover',
+      'frame-who',
+      'ignite',
+      'ignite-deck-1',
+      'ignite-deck-2',
+      'ignite-deck-3',
+      'ignite-deck-4',
+      'ignite-deck-5',
+      'ignite-deck-6',
+      'ignite-deck-7',
+      'awards',
+      'thanks',
+      'outro',
     ])
   })
 })
@@ -64,8 +74,12 @@ describe('stepSlide', () => {
     expect(stepSlide('goal', -1)).toBe('presenter')
   })
 
-  it('holds on the clock instead of wrapping to the title', () => {
-    expect(stepSlide('deadlinecountdown', 1)).toBe('deadlinecountdown')
+  it('moves on from the deadline clock to the evening slides', () => {
+    expect(stepSlide('deadlinecountdown', 1)).toBe('finals')
+  })
+
+  it('holds on the last slide instead of wrapping to the title', () => {
+    expect(stepSlide('outro', 1)).toBe('outro')
   })
 
   it('goes back from the title to the countdown', () => {

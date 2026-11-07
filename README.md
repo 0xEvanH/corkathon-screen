@@ -1,6 +1,6 @@
 # Corkathon screen
 
-The big-screen page for Corkathon, run by the UCC Computer Science Society. It carries the sixteen-slide opening talk, then stays on the event poster with a live GMT flip clock on the monitor's screen.
+The big-screen page for Corkathon, run by the UCC Computer Science Society. It carries the eight-slide opening talk (the Frame and Ignite slides now run in the evening, after the sponsor panel slide), then stays on the event poster with a live GMT flip clock on the monitor's screen.
 
 Built with React, Tailwind and Motion on Vite. The clock always shows GMT, including during Irish summer time, and takes the time from the device's clock, so check the system time on the machine running the display.
 
@@ -27,16 +27,26 @@ Then open http://localhost:4173 and go full screen.
 | 5. Format and Devpost | `/#format` |
 | 6. Judging | `/#judging` |
 | 7. Quick housekeeping | `/#housekeeping` |
-| 8. Frame: Harry Page | `/#frame` |
-| 9. Frame backdrop | `/#frame-backdrop` |
-| 10. Frame: Who we are | `/#frame-who` |
-| 11. Frame: The challenge | `/#frame-challenge` |
-| 12. Frame: What great looks like | `/#frame-directions` |
-| 13. Frame: How it's judged | `/#frame-judging` |
-| 14. Ignite: Eamon Curtin | `/#ignite` |
-| 15. Ignite's challenge | `/#ignite-brief` |
-| 16. Let the hacking begin | `/#begin` |
+| 8. Let the hacking begin | `/#begin` |
 | Deadline countdown | `/#deadlinecountdown` |
+| 9. Evening: Top 10 finalists | `/#finals` |
+| 10. Evening: Final pitches | `/#finals-format` |
+| 11. Evening: Sponsor keynote & panel | `/#panel` |
+| 12. Frame: Harry Page | `/#frame` |
+| 13. Frame backdrop | `/#frame-backdrop` |
+| 14. Frame: Cover | `/#frame-cover` |
+| 15. Frame: Who we are | `/#frame-who` |
+| 16. Ignite: Eamon Curtin | `/#ignite` |
+| 17. IGNITE deck: IGNITE: UCC’s Home for Entrepreneurship | `/#ignite-deck-1` |
+| 18. IGNITE deck: What is IGNITE? | `/#ignite-deck-2` |
+| 19. IGNITE deck: What you get when you join IGNITE | `/#ignite-deck-3` |
+| 20. IGNITE deck: Is this you? | `/#ignite-deck-4` |
+| 21. IGNITE deck: IGNITE for students | `/#ignite-deck-5` |
+| 22. IGNITE deck: Follow IGNITE and join the community | `/#ignite-deck-6` |
+| 23. IGNITE deck: Your next profile photo could be on us! | `/#ignite-deck-7` |
+| 24. Evening: Awards | `/#awards` |
+| 25. Evening: Thank you | `/#thanks` |
+| 26. Closing: Corkathon 2026 | `/#outro` |
 
 Space, Enter, the right arrow, Page Down or a mouse click moves forward. The left arrow or Page Up moves back. Presentation clickers send Page Up and Page Down, so they work with no setup.
 
@@ -49,7 +59,7 @@ A bare address still opens on the title slide. Every slide also opens from a pat
 
 To change either time, edit `TALK_STARTS` or `HACKING_ENDS` in [src/countdown.ts](src/countdown.ts) and the times in its tests.
 
-The talk stops at the clock and does not loop. A refresh stays on the current slide, so reloading during the event will not replay the talk. To replay it, open `/#title`.
+After hacking ends, keep pressing forward from the deadline clock for the evening slides. The deck ends on the Corkathon 2026 title (`/#outro`) and does not loop. A refresh stays on the current slide, so reloading during the event will not replay the talk. To replay it, open `/#title`.
 
 ## Fill in the slides
 

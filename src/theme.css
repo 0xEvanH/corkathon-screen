@@ -31,6 +31,8 @@
   --color-frame-rule: #7a6b6e;
   /* Frame's #7a6b6e darkened just enough to pass contrast for small text */
   --color-frame-muted: #5f5053;
+  /* Frame's #ccc6c8 lifted to pass contrast as small text on the olive */
+  --color-frame-mist: #e8e4e5;
   --font-frame-sans: Arial, 'Helvetica Neue', sans-serif;
   --font-frame-serif: Georgia, 'Times New Roman', serif;
 
